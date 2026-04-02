@@ -1,0 +1,21 @@
+# Ngrok configuration to tunnel Ollama
+# Save as: ngrok.yml
+
+version: "2"
+authtoken: ak_341EUO79wCrROTqcM0zykoINmyo
+
+tunnels:
+  ollama:
+    proto: http
+    addr: 11434
+    host_header: localhost
+    inspect: false
+    
+  nextjs:
+    proto: http
+    addr: 3000
+    host_header: localhost
+    inspect: false
+
+# Region: US (default)
+region: us
