@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Call Ollama API
+    // Call Ollama API with timeout
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout
+    
     const ollamaResponse = await fetch(`${OLLAMA_BASE_URL}/api/chat`, {
       method: 'POST',
       headers: {
@@ -26,7 +29,9 @@ export async function POST(request: NextRequest) {
         messages,
         stream: false,
       }),
+      signal: controller.signal,
     })
+    clearTimeout(timeoutId)
 
     if (!ollamaResponse.ok) {
       const errorText = await ollamaResponse.text()
