@@ -25,6 +25,9 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --cwd=/app/.next/standalone ./
 COPY --from=builder --cwd=/app/.next/static ./.next/static
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
 
 USER nextjs
 
@@ -32,5 +35,6 @@ EXPOSE 3000
 
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
+ENV OLLAMA_BASE_URL=http://ollama:11434
 
-CMD ["node", "server.js"]
+CMD ["/docker-entrypoint.sh"]

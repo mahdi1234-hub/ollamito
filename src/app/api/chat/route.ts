@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
 
     const data = await ollamaResponse.json()
     
-    return NextResponse.json(data.message.content)
+    // Return the full response so frontend can access data.message
+    return NextResponse.json({ message: data.message?.content || data.message || '' })
   } catch (error) {
     console.error('Chat route error:', error)
     return NextResponse.json(
