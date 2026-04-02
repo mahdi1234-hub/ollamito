@@ -1,0 +1,34 @@
+# fly.toml configuration for Fly.io
+app = "ollamito"
+primary_region = "lax"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  strategy = "rolling"
+  wait_timeout = "5m"
+
+# Environment variables
+[env]
+  OLLAMA_BASE_URL = "http://ollama:11434"
+  NODE_ENV = "production"
+
+[[services]]
+  name = "ollamito-web"
+  http_checks = []
+  internal_port = 3000
+  protocol = "tcp"
+
+  [services.ports]
+    port = 80
+    handlers = ["http"]
+
+  [services.ports]
+    port = 443
+    handlers = ["tls", "http"]
+
+# Auto-start Ollama
+[processes]
+  app = "./run.sh"
+  ollama = "Pull llama3 and start ollama serve"
